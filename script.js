@@ -11,21 +11,45 @@ document.addEventListener("DOMContentLoaded", () => {
   
     // Mensagens humorísticas em português
     const funnyMessages = [
-      "Está difícil, hein? O botão está mais rápido que você!",
-      "Opa! Parece que alguém precisa melhorar a mira...",
-      "Calma, respira fundo... O botão não morde!",
-      "Você está jogando ou só decorando a tela?",
-      "Talvez você deveria tentar usar os dois olhos!",
-      "O botão está zombando de você agora!",
-      "Já pensou em uma carreira como atirador? Não recomendo...",
-      "Até minha vovó conseguiria pegar esse botão!",
-      "Você está tentando não acertar de propósito?",
-      "Isso é um teste de paciência e você está falhando!",
-      "Tente imaginar que o botão é uma pizza. Funciona para mim!",
-      "Você está deixando o botão ganhar de propósito, certo?",
-      "Não desista! Ou melhor, talvez seja hora de desistir...",
-      "Esse botão tem superpoderes ou você que é muito lento?",
-      "Vamos lá! Meu hamster tem reflexos melhores que isso!",
+        "Rapaz, você está mais lento que internet discada!",
+
+        "Acho que até o Wi-Fi da minha casa consegue reagir mais rápido que você.",
+        
+        "Parece que você está jogando com sono, hein?",
+        
+        "Você tem certeza que está jogando ou só assistindo a tela?",
+        
+        "Eu nunca vi alguém perder para um botão com tanta classe.",
+        
+        "Eu vi uma tartaruga mais rápida que isso!",
+        
+        "Você está esperando o botão se arrepender?",
+        
+        "O botão já te deu uns 10 segundos de vantagem e mesmo assim...",
+        
+        "Você está treinando para ser o pior, é isso?",
+        
+        "Se tivesse uma competição de lentidão, você ganhava com certeza!",
+        
+        "Esse botão é mais esperto que você, e olha que ele é só um botão!",
+        
+        "Dá para sentir a vergonha até daqui... e olha que estou bem longe!",
+        
+        "Esse botão tem mais chance de ganhar de você do que o Cristiano Ronaldo no futebol.",
+        
+        "Vai treinar com o seu avô? Ele é mais rápido que isso!",
+        
+        "Está difícil até para o botão não te deixar para trás!",
+        
+        "Eu vi uma estátua reagindo mais rápido que você.",
+        
+        "Você está com o freio de mão puxado ou isso é só sua habilidade mesmo?",
+        
+        "Já pensou em virar mascote do jogo? Só não serve para mais nada!",
+        
+        "Esse botão está rindo de você, e nem posso culpá-lo.",
+        
+        "Você jogando assim parece mais um tutorial de como não fazer!",
     ]
   
     // Criar partículas flutuantes
@@ -51,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
       // Se o mouse estiver se aproximando, mover o botão
       // Limiar aumentado para 300px para facilitar a captura
-      if (distance < 300) {
+      if (distance < 450) {
         moveButton()
       }
     })
