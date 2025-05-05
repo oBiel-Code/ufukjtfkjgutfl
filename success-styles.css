@@ -1,0 +1,354 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap");
+
+:root {
+  --primary-color: #8a2be2; /* Roxo */
+  --accent-color: #4169e1; /* Azul Royal */
+  --background-dark: #121212;
+  --background-medium: #1e1e2e;
+  --text-color: #e0e0e0;
+  --gold-color: #ffd700;
+  --shadow-color: rgba(0, 0, 0, 0.5);
+  --glow-color: rgba(138, 43, 226, 0.6);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+  background-color: var(--background-dark);
+  color: var(--text-color);
+  overflow: hidden;
+  position: relative;
+}
+
+.background-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.emoji-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("emoji-background.png");
+  background-size: cover;
+  background-position: center;
+  opacity: 0.4; /* Aumentada para melhor visibilidade */
+  animation: pulse 8s infinite alternate;
+  filter: hue-rotate(180deg);
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(18, 18, 18, 0.8), rgba(30, 30, 46, 0.7));
+  z-index: 0;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.25;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0.35;
+    transform: scale(1.05);
+  }
+}
+
+.success-container {
+  background: rgba(30, 30, 46, 0.8);
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 0 30px var(--glow-color);
+  max-width: 600px;
+  position: relative;
+  z-index: 10;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(138, 43, 226, 0.3);
+  transform: scale(0.9);
+  animation: popIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes popIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  80% {
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.title-success {
+  color: var(--text-color);
+  margin-bottom: 20px;
+  font-size: 3rem;
+  text-shadow: 0 0 15px var(--glow-color);
+  animation: colorChange 5s infinite alternate;
+}
+
+@keyframes colorChange {
+  0% {
+    color: var(--primary-color);
+    text-shadow: 0 0 15px var(--glow-color);
+  }
+  50% {
+    color: var(--accent-color);
+    text-shadow: 0 0 20px rgba(65, 105, 225, 0.6);
+  }
+  100% {
+    color: var(--primary-color);
+    text-shadow: 0 0 15px var(--glow-color);
+  }
+}
+
+.message {
+  color: var(--text-color);
+  font-size: 20px;
+  line-height: 1.6;
+  margin-bottom: 30px;
+  animation: fadeInUp 1s ease-out 0.5s both;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.confetti {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: var(--primary-color);
+  opacity: 0;
+  animation: confetti-fall 5s ease-in-out infinite;
+  z-index: 1;
+}
+
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(-100vh) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+.play-again {
+  padding: 16px 32px;
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 0 20px var(--glow-color);
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+  animation: bounceIn 1s ease-out 1s both;
+}
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.play-again::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: 0.5s;
+}
+
+.play-again:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 30px var(--glow-color);
+}
+
+.play-again:hover::before {
+  left: 100%;
+}
+
+.play-again:active {
+  transform: translateY(0);
+  box-shadow: 0 0 20px var(--glow-color);
+}
+
+.trophy {
+  margin-bottom: 20px;
+  color: var(--gold-color);
+  animation: shine 3s infinite;
+  transform-origin: center;
+}
+
+@keyframes shine {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.7));
+    transform: scale(1);
+  }
+  50% {
+    filter: drop-shadow(0 0 25px rgba(255, 215, 0, 0.9));
+    transform: scale(1.1);
+  }
+}
+
+.trophy-icon {
+  width: 80px;
+  height: 80px;
+}
+
+/* Animação das estrelas */
+.stars-container {
+  position: relative;
+  width: 100%;
+  height: 50px;
+  margin-bottom: 30px;
+}
+
+.star {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  background-color: transparent;
+  transform: rotate(45deg);
+}
+
+.star::before,
+.star::after {
+  content: "";
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  background-color: var(--gold-color);
+  border-radius: 50%;
+}
+
+.star::before {
+  top: -15px;
+  left: 0;
+}
+
+.star::after {
+  top: 0;
+  left: -15px;
+}
+
+.star:nth-child(1) {
+  left: 20%;
+  animation: starFloat 3s ease-in-out infinite;
+  animation-delay: 0s;
+}
+
+.star:nth-child(2) {
+  left: 50%;
+  animation: starFloat 3s ease-in-out infinite;
+  animation-delay: 0.5s;
+}
+
+.star:nth-child(3) {
+  left: 80%;
+  animation: starFloat 3s ease-in-out infinite;
+  animation-delay: 1s;
+}
+
+@keyframes starFloat {
+  0%,
+  100% {
+    transform: translateY(0) rotate(45deg);
+  }
+  50% {
+    transform: translateY(-15px) rotate(45deg);
+  }
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .success-container {
+    max-width: 90%;
+    padding: 30px;
+  }
+
+  .title-success {
+    font-size: 2.5rem;
+  }
+
+  .message {
+    font-size: 18px;
+  }
+
+  .trophy-icon {
+    width: 60px;
+    height: 60px;
+  }
+}
+
+@media (max-width: 480px) {
+  .success-container {
+    padding: 20px;
+  }
+
+  .title-success {
+    font-size: 2rem;
+  }
+
+  .message {
+    font-size: 16px;
+  }
+
+  .play-again {
+    padding: 12px 24px;
+    font-size: 16px;
+  }
+}

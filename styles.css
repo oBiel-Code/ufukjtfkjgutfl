@@ -1,0 +1,423 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap");
+
+:root {
+  --primary-color: #8a2be2; /* Roxo */
+  --primary-hover: #9b59b6;
+  --accent-color: #4169e1; /* Azul Royal */
+  --accent-light: #6495ed;
+  --background-dark: #121212;
+  --background-medium: #1e1e2e;
+  --text-color: #e0e0e0;
+  --shadow-color: rgba(0, 0, 0, 0.5);
+  --glow-color: rgba(138, 43, 226, 0.6);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+  background-color: var(--background-dark);
+  color: var(--text-color);
+  overflow: hidden;
+  position: relative;
+}
+
+.background-animation {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background: linear-gradient(125deg, var(--background-dark), var(--background-medium));
+  overflow: hidden;
+}
+
+.background-animation::before {
+  content: "";
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  top: -50%;
+  left: -50%;
+  background: radial-gradient(circle, rgba(138, 43, 226, 0.1) 10%, transparent 10%),
+    radial-gradient(circle, rgba(65, 105, 225, 0.1) 10%, transparent 10%);
+  background-size: 50px 50px;
+  background-position: 0 0, 25px 25px;
+  animation: backgroundMove 30s linear infinite;
+}
+
+@keyframes backgroundMove {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.title {
+  color: var(--text-color);
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  text-align: center;
+  text-shadow: 0 0 10px var(--glow-color);
+  animation: fadeInDown 1s ease-out, glowPulse 3s infinite alternate;
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  animation: fadeInUp 1s ease-out 0.3s both;
+  color: var(--text-color);
+  opacity: 0.9;
+}
+
+@keyframes glowPulse {
+  0% {
+    text-shadow: 0 0 10px var(--glow-color);
+  }
+  100% {
+    text-shadow: 0 0 20px var(--glow-color), 0 0 30px var(--glow-color);
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.game-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+#catch-button {
+  position: absolute;
+  padding: 25px 50px; /* Botão ainda maior */
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-size: 24px; /* Fonte maior */
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 0 20px var(--glow-color);
+  transition: all 0.3s ease;
+  user-select: none;
+  z-index: 10;
+  overflow: hidden;
+  min-width: 200px; /* Largura mínima para garantir tamanho adequado */
+  touch-action: manipulation; /* Melhora a resposta em dispositivos touch */
+}
+
+#catch-button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: 0.5s;
+}
+
+#catch-button:hover {
+  background: linear-gradient(135deg, var(--primary-hover), var(--accent-light));
+  transform: scale(1.05) translateY(-3px);
+  box-shadow: 0 0 30px var(--glow-color);
+}
+
+#catch-button:hover::before {
+  left: 100%;
+}
+
+.instructions {
+  position: fixed;
+  top: 20px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: var(--text-color);
+  z-index: 10;
+  background: rgba(30, 30, 46, 0.8);
+  padding: 15px;
+  border-radius: 15px;
+  margin: 0 auto;
+  max-width: 600px;
+  box-shadow: 0 8px 20px var(--shadow-color);
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(138, 43, 226, 0.3);
+  transform: translateY(-100px);
+  animation: slideDown 1s forwards;
+}
+
+@keyframes slideDown {
+  to {
+    transform: translateY(0);
+  }
+}
+
+.attempts {
+  position: fixed;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: var(--text-color);
+  font-size: 18px;
+  font-weight: 600;
+  background: rgba(30, 30, 46, 0.8);
+  padding: 12px;
+  border-radius: 50px;
+  margin: 0 auto;
+  max-width: 200px;
+  box-shadow: 0 4px 15px var(--shadow-color);
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(138, 43, 226, 0.3);
+  transform: translateY(100px);
+  animation: slideUp 1s forwards;
+}
+
+@keyframes slideUp {
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* Animação de pulsação para o botão */
+.pulse {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 20px var(--glow-color);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 0 30px var(--glow-color);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 20px var(--glow-color);
+  }
+}
+
+/* Efeito de clique */
+.click-effect {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--primary-color), var(--accent-color));
+  transform: scale(0);
+  animation: clickRipple 0.8s ease-out;
+  pointer-events: none;
+  z-index: 5;
+}
+
+@keyframes clickRipple {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(20);
+    opacity: 0;
+  }
+}
+
+/* Partículas flutuantes */
+.particle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0.8;
+  animation: float 15s linear infinite;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(-1000px) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+/* Efeito de rastro */
+.trail {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  pointer-events: none;
+  opacity: 0.7;
+  z-index: 1;
+  animation: fadeOut 1s forwards;
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translateX(-5px);
+  }
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translateX(5px);
+  }
+}
+
+/* Estilos para o popup */
+.popup-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s, visibility 0.3s;
+}
+
+.popup-container.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.popup {
+  background: linear-gradient(135deg, var(--background-medium), #2a2a4a);
+  padding: 30px;
+  border-radius: 15px;
+  max-width: 80%;
+  width: 400px;
+  text-align: center;
+  box-shadow: 0 0 30px var(--glow-color);
+  border: 1px solid rgba(138, 43, 226, 0.5);
+  transform: scale(0.8);
+  animation: popIn 0.5s forwards;
+}
+
+@keyframes popIn {
+  to {
+    transform: scale(1);
+  }
+}
+
+.popup p {
+  font-size: 18px;
+  margin-bottom: 20px;
+  color: var(--text-color);
+  line-height: 1.5;
+}
+
+.popup button {
+  padding: 10px 20px;
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  color: white;
+  border: none;
+  border-radius: 30px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.popup button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 15px var(--glow-color);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .title {
+    font-size: 2rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+  }
+
+  #catch-button {
+    padding: 20px 40px;
+    font-size: 20px;
+    min-width: 180px;
+  }
+
+  .instructions {
+    max-width: 90%;
+    padding: 12px;
+  }
+
+  .popup {
+    width: 90%;
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 1.8rem;
+  }
+
+  #catch-button {
+    padding: 15px 30px;
+    font-size: 18px;
+    min-width: 160px;
+  }
+}
