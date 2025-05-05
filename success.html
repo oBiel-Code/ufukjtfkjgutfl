@@ -33,7 +33,10 @@
             <div class="star"></div>
             <div class="star"></div>
         </div>
-        <button class="play-again" onclick="window.location.href='index.html'">Jogar Novamente</button>
+        <div class="action-buttons">
+            <button class="play-again" onclick="window.location.href='index.html'">Jogar Novamente</button>
+            <button class="change-difficulty" onclick="localStorage.removeItem('selectedDifficulty'); window.location.href='index.html'">Mudar Dificuldade</button>
+        </div>
     </div>
 
     <script src="success-script.js"></script>

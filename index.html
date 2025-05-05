@@ -12,17 +12,52 @@
 <body>
     <div class="background-animation"></div>
     
-    <div class="instructions">
-        <h1 class="title">Tente Me Pegar!</h1>
-        <p class="subtitle">Tente clicar no botão antes que ele escape!</p>
+    <!-- Tela de seleção de dificuldade -->
+    <div id="difficulty-screen" class="difficulty-screen">
+        <div class="difficulty-container">
+            <h1 class="title">Tente Me Pegar!</h1>
+            <p class="subtitle">Escolha o nível de dificuldade:</p>
+            
+            <div class="difficulty-options">
+                <button class="difficulty-btn" data-difficulty="facil">
+                    <span class="difficulty-icon">😊</span>
+                    <span class="difficulty-name">Fácil</span>
+                    <span class="difficulty-desc">Para iniciantes</span>
+                </button>
+                
+                <button class="difficulty-btn" data-difficulty="medio">
+                    <span class="difficulty-icon">😐</span>
+                    <span class="difficulty-name">Médio</span>
+                    <span class="difficulty-desc">Desafio equilibrado</span>
+                </button>
+                
+                <button class="difficulty-btn" data-difficulty="dificil">
+                    <span class="difficulty-icon">😈</span>
+                    <span class="difficulty-name">Difícil</span>
+                    <span class="difficulty-desc">Para experts</span>
+                </button>
+            </div>
+        </div>
     </div>
     
-    <div class="game-container">
-        <button id="catch-button" class="pulse">Clique Aqui!</button>
-    </div>
-    
-    <div class="attempts">
-        <p>Tentativas: <span id="attempt-count">0</span></p>
+    <!-- Tela do jogo (inicialmente oculta) -->
+    <div id="game-screen" class="game-screen hidden">
+        <div class="instructions">
+            <h1 class="title">Tente Me Pegar!</h1>
+            <p class="subtitle">Tente clicar no botão antes que ele escape!</p>
+            <div class="difficulty-badge" id="difficulty-badge">
+                Nível: <span id="current-difficulty">Médio</span>
+                <button id="change-difficulty" class="change-difficulty-btn">Mudar</button>
+            </div>
+        </div>
+        
+        <div class="game-container">
+            <button id="catch-button" class="pulse">Clique Aqui!</button>
+        </div>
+        
+        <div class="attempts">
+            <p>Tentativas: <span id="attempt-count">0</span></p>
+        </div>
     </div>
 
     <div id="popup-container" class="popup-container">

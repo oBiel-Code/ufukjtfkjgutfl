@@ -1,4 +1,21 @@
 document.addEventListener("DOMContentLoaded", () => {
+    // Obter a dificuldade selecionada do localStorage
+    const selectedDifficulty = localStorage.getItem("selectedDifficulty") || "medio"
+  
+    // Atualizar o texto da dificuldade completada
+    const completedDifficultySpan = document.getElementById("completed-difficulty")
+  
+    // Mapear o valor da dificuldade para o nome em português
+    const difficultyNames = {
+      facil: "Fácil",
+      medio: "Médio",
+      dificil: "Difícil",
+    }
+  
+    // Atualizar o texto e a classe
+    completedDifficultySpan.textContent = difficultyNames[selectedDifficulty] || "Médio"
+    completedDifficultySpan.className = selectedDifficulty
+  
     // Animação de fade in para o body
     document.body.style.opacity = "0"
     document.body.style.transition = "opacity 1s ease-in-out"
@@ -104,16 +121,18 @@ document.addEventListener("DOMContentLoaded", () => {
       }, 5000)
     }
   
-    // Adicionar efeito de hover ao botão jogar novamente
-    const playAgainButton = document.querySelector(".play-again")
-    playAgainButton.addEventListener("mouseenter", () => {
-      playAgainButton.style.transform = "translateY(-5px)"
-      playAgainButton.style.boxShadow = "0 0 30px rgba(138, 43, 226, 0.8)"
-    })
+    // Adicionar efeito de hover aos botões
+    const buttons = document.querySelectorAll(".play-again, .change-difficulty")
+    buttons.forEach((button) => {
+      button.addEventListener("mouseenter", () => {
+        button.style.transform = "translateY(-5px)"
+        button.style.boxShadow = "0 0 30px rgba(138, 43, 226, 0.8)"
+      })
   
-    playAgainButton.addEventListener("mouseleave", () => {
-      playAgainButton.style.transform = ""
-      playAgainButton.style.boxShadow = ""
+      button.addEventListener("mouseleave", () => {
+        button.style.transform = ""
+        button.style.boxShadow = ""
+      })
     })
   })
   

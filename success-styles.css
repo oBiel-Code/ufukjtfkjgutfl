@@ -9,6 +9,9 @@
   --gold-color: #ffd700;
   --shadow-color: rgba(0, 0, 0, 0.5);
   --glow-color: rgba(138, 43, 226, 0.6);
+  --easy-color: #4caf50;
+  --medium-color: #ff9800;
+  --hard-color: #f44336;
 }
 
 * {
@@ -50,7 +53,7 @@ body {
   background-image: url("emoji-background.png");
   background-size: cover;
   background-position: center;
-  opacity: 0.4; /* Aumentada para melhor visibilidade */
+  opacity: 0.3; /* Aumentada para melhor visibilidade */
   animation: pulse 8s infinite alternate;
   filter: hue-rotate(180deg);
 }
@@ -133,6 +136,26 @@ body {
   line-height: 1.6;
   margin-bottom: 30px;
   animation: fadeInUp 1s ease-out 0.5s both;
+  text-align: center;
+}
+
+#completed-difficulty {
+  font-weight: bold;
+}
+
+#completed-difficulty.facil {
+  color: var(--easy-color);
+  text-shadow: 0 0 10px var(--easy-color);
+}
+
+#completed-difficulty.medio {
+  color: var(--medium-color);
+  text-shadow: 0 0 10px var(--medium-color);
+}
+
+#completed-difficulty.dificil {
+  color: var(--hard-color);
+  text-shadow: 0 0 10px var(--hard-color);
 }
 
 @keyframes fadeInUp {
@@ -167,7 +190,16 @@ body {
   }
 }
 
-.play-again {
+.action-buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.play-again,
+.change-difficulty {
   padding: 16px 32px;
   background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
   color: white;
@@ -200,7 +232,8 @@ body {
   }
 }
 
-.play-again::before {
+.play-again::before,
+.change-difficulty::before {
   content: "";
   position: absolute;
   top: 0;
@@ -211,16 +244,19 @@ body {
   transition: 0.5s;
 }
 
-.play-again:hover {
+.play-again:hover,
+.change-difficulty:hover {
   transform: translateY(-5px);
   box-shadow: 0 0 30px var(--glow-color);
 }
 
-.play-again:hover::before {
+.play-again:hover::before,
+.change-difficulty:hover::before {
   left: 100%;
 }
 
-.play-again:active {
+.play-again:active,
+.change-difficulty:active {
   transform: translateY(0);
   box-shadow: 0 0 20px var(--glow-color);
 }
@@ -332,6 +368,17 @@ body {
     width: 60px;
     height: 60px;
   }
+
+  .action-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .play-again,
+  .change-difficulty {
+    padding: 14px 28px;
+    font-size: 16px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -347,7 +394,8 @@ body {
     font-size: 16px;
   }
 
-  .play-again {
+  .play-again,
+  .change-difficulty {
     padding: 12px 24px;
     font-size: 16px;
   }

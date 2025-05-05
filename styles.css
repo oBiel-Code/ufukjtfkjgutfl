@@ -10,6 +10,9 @@
   --text-color: #e0e0e0;
   --shadow-color: rgba(0, 0, 0, 0.5);
   --glow-color: rgba(138, 43, 226, 0.6);
+  --easy-color: #4caf50;
+  --medium-color: #ff9800;
+  --hard-color: #f44336;
 }
 
 * {
@@ -77,10 +80,11 @@ body {
 
 .subtitle {
   font-size: 1.2rem;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   animation: fadeInUp 1s ease-out 0.3s both;
   color: var(--text-color);
   opacity: 0.9;
+  text-align: center;
 }
 
 @keyframes glowPulse {
@@ -114,6 +118,115 @@ body {
   }
 }
 
+/* Estilos para a tela de seleção de dificuldade */
+.difficulty-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 50;
+}
+
+.difficulty-container {
+  background: rgba(30, 30, 46, 0.8);
+  padding: 40px;
+  border-radius: 20px;
+  max-width: 600px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 0 30px var(--glow-color);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(138, 43, 226, 0.3);
+  animation: popIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.difficulty-options {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.difficulty-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  border-radius: 15px;
+  background: linear-gradient(135deg, rgba(30, 30, 46, 0.9), rgba(42, 42, 74, 0.9));
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.difficulty-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: 0.5s;
+}
+
+.difficulty-btn:hover::before {
+  left: 100%;
+}
+
+.difficulty-btn[data-difficulty="facil"] {
+  border-color: var(--easy-color);
+}
+
+.difficulty-btn[data-difficulty="medio"] {
+  border-color: var(--medium-color);
+}
+
+.difficulty-btn[data-difficulty="dificil"] {
+  border-color: var(--hard-color);
+}
+
+.difficulty-btn:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.difficulty-icon {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.difficulty-name {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.difficulty-desc {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+/* Estilos para a tela do jogo */
+.game-screen {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hidden {
+  display: none;
+}
+
 .game-container {
   width: 100%;
   height: 100%;
@@ -122,12 +235,12 @@ body {
 
 #catch-button {
   position: absolute;
-  padding: 25px 50px; /* Botão ainda maior */
+  padding: 25px 50px; /* Botão padrão (médio) */
   background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
   color: white;
   border: none;
   border-radius: 50px;
-  font-size: 24px; /* Fonte maior */
+  font-size: 24px;
   font-weight: 600;
   cursor: pointer;
   box-shadow: 0 0 20px var(--glow-color);
@@ -135,8 +248,23 @@ body {
   user-select: none;
   z-index: 10;
   overflow: hidden;
-  min-width: 200px; /* Largura mínima para garantir tamanho adequado */
-  touch-action: manipulation; /* Melhora a resposta em dispositivos touch */
+  min-width: 200px;
+  touch-action: manipulation;
+}
+
+/* Estilos específicos para cada dificuldade */
+.difficulty-facil #catch-button {
+  padding: 30px 60px; /* Botão maior */
+  font-size: 28px;
+  min-width: 240px;
+  box-shadow: 0 0 25px rgba(76, 175, 80, 0.6);
+}
+
+.difficulty-dificil #catch-button {
+  padding: 20px 40px; /* Botão menor */
+  font-size: 20px;
+  min-width: 160px;
+  box-shadow: 0 0 25px rgba(244, 67, 54, 0.6);
 }
 
 #catch-button::before {
@@ -178,6 +306,33 @@ body {
   border: 1px solid rgba(138, 43, 226, 0.3);
   transform: translateY(-100px);
   animation: slideDown 1s forwards;
+}
+
+.difficulty-badge {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 5px 15px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.change-difficulty-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 15px;
+  padding: 3px 10px;
+  margin-left: 10px;
+  color: var(--text-color);
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: all 0.3s;
+}
+
+.change-difficulty-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
 }
 
 @keyframes slideDown {
@@ -399,6 +554,18 @@ body {
     min-width: 180px;
   }
 
+  .difficulty-facil #catch-button {
+    padding: 25px 50px;
+    font-size: 24px;
+    min-width: 220px;
+  }
+
+  .difficulty-dificil #catch-button {
+    padding: 15px 30px;
+    font-size: 18px;
+    min-width: 140px;
+  }
+
   .instructions {
     max-width: 90%;
     padding: 12px;
@@ -407,6 +574,22 @@ body {
   .popup {
     width: 90%;
     padding: 20px;
+  }
+
+  .difficulty-options {
+    gap: 10px;
+  }
+
+  .difficulty-btn {
+    padding: 15px;
+  }
+
+  .difficulty-icon {
+    font-size: 1.8rem;
+  }
+
+  .difficulty-name {
+    font-size: 1.3rem;
   }
 }
 
@@ -419,5 +602,38 @@ body {
     padding: 15px 30px;
     font-size: 18px;
     min-width: 160px;
+  }
+
+  .difficulty-facil #catch-button {
+    padding: 20px 40px;
+    font-size: 22px;
+    min-width: 200px;
+  }
+
+  .difficulty-dificil #catch-button {
+    padding: 12px 24px;
+    font-size: 16px;
+    min-width: 120px;
+  }
+
+  .difficulty-container {
+    padding: 30px 20px;
+  }
+
+  .difficulty-btn {
+    padding: 12px;
+  }
+
+  .difficulty-icon {
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+  }
+
+  .difficulty-name {
+    font-size: 1.2rem;
+  }
+
+  .difficulty-desc {
+    font-size: 0.8rem;
   }
 }

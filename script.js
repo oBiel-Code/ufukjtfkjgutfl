@@ -1,132 +1,203 @@
 document.addEventListener("DOMContentLoaded", () => {
+    const difficultyScreen = document.getElementById("difficulty-screen")
+    const gameScreen = document.getElementById("game-screen")
     const button = document.getElementById("catch-button")
     const attemptCounter = document.getElementById("attempt-count")
     const gameContainer = document.querySelector(".game-container")
     const popupContainer = document.getElementById("popup-container")
     const popupMessage = document.getElementById("popup-message")
     const popupClose = document.getElementById("popup-close")
+    const currentDifficultySpan = document.getElementById("current-difficulty")
+    const changeDifficultyBtn = document.getElementById("change-difficulty")
   
     let attempts = 0
     let consecutiveMisses = 0
+    let selectedDifficulty = localStorage.getItem("selectedDifficulty") || null
+  
+    // Configurações para cada nível de dificuldade
+    const difficultySettings = {
+      facil: {
+        name: "Fácil",
+        moveThreshold: 350, // Distância maior para começar a mover (mais fácil)
+        moveDistance: 100, // Distância menor de movimento (mais fácil)
+        moveSpeed: 0.8, // Velocidade mais lenta (mais fácil)
+        consecutiveMissesThreshold: 15, // Mais tentativas antes de mostrar mensagem
+      },
+      medio: {
+        name: "Médio",
+        moveThreshold: 300,
+        moveDistance: 150,
+        moveSpeed: 0.6,
+        consecutiveMissesThreshold: 10,
+      },
+      dificil: {
+        name: "Difícil",
+        moveThreshold: 250, // Distância menor para começar a mover (mais difícil)
+        moveDistance: 200, // Distância maior de movimento (mais difícil)
+        moveSpeed: 0.4, // Velocidade mais rápida (mais difícil)
+        consecutiveMissesThreshold: 5, // Menos tentativas antes de mostrar mensagem
+      },
+    }
   
     // Mensagens humorísticas em português
     const funnyMessages = [
-        "Rapaz, você está mais lento que internet discada!",
-
-        "Acho que até o Wi-Fi da minha casa consegue reagir mais rápido que você.",
-        
-        "Parece que você está jogando com sono, hein?",
-        
-        "Você tem certeza que está jogando ou só assistindo a tela?",
-        
-        "Eu nunca vi alguém perder para um botão com tanta classe.",
-        
-        "Eu vi uma tartaruga mais rápida que isso!",
-        
-        "Você está esperando o botão se arrepender?",
-        
-        "O botão já te deu uns 10 segundos de vantagem e mesmo assim...",
-        
-        "Você está treinando para ser o pior, é isso?",
-        
-        "Se tivesse uma competição de lentidão, você ganhava com certeza!",
-        
-        "Esse botão é mais esperto que você, e olha que ele é só um botão!",
-        
-        "Dá para sentir a vergonha até daqui... e olha que estou bem longe!",
-        
-        "Esse botão tem mais chance de ganhar de você do que o Cristiano Ronaldo no futebol.",
-        
-        "Vai treinar com o seu avô? Ele é mais rápido que isso!",
-        
-        "Está difícil até para o botão não te deixar para trás!",
-        
-        "Eu vi uma estátua reagindo mais rápido que você.",
-        
-        "Você está com o freio de mão puxado ou isso é só sua habilidade mesmo?",
-        
-        "Já pensou em virar mascote do jogo? Só não serve para mais nada!",
-        
-        "Esse botão está rindo de você, e nem posso culpá-lo.",
-        
-        "Você jogando assim parece mais um tutorial de como não fazer!",
+      "Está difícil, hein? O botão está mais rápido que você!",
+      "Opa! Parece que alguém precisa melhorar a mira...",
+      "Calma, respira fundo... O botão não morde!",
+      "Você está jogando ou só decorando a tela?",
+      "Talvez você deveria tentar usar os dois olhos!",
+      "O botão está zombando de você agora!",
+      "Já pensou em uma carreira como atirador? Não recomendo...",
+      "Até minha vovó conseguiria pegar esse botão!",
+      "Você está tentando não acertar de propósito?",
+      "Isso é um teste de paciência e você está falhando!",
+      "Tente imaginar que o botão é uma pizza. Funciona para mim!",
+      "Você está deixando o botão ganhar de propósito, certo?",
+      "Não desista! Ou melhor, talvez seja hora de desistir...",
+      "Esse botão tem superpoderes ou você que é muito lento?",
+      "Vamos lá! Meu hamster tem reflexos melhores que isso!",
     ]
   
-    // Criar partículas flutuantes
-    createParticles()
+    // Mensagens específicas para cada dificuldade
+    const difficultyMessages = {
+      facil: [
+        "Mesmo no modo fácil está complicado, hein?",
+        "Talvez você deveria tentar o modo 'super ultra mega fácil'...",
+        "O botão está no modo fácil, mas parece que você está no modo 'impossível'!",
+      ],
+      medio: [
+        "Nível médio está te desafiando? Interessante...",
+        "Nem fácil, nem difícil, mas você continua errando!",
+        "Talvez você deveria voltar para o modo fácil...",
+      ],
+      dificil: [
+        "Uau! Você é corajoso tentando o modo difícil!",
+        "Modo difícil não é para qualquer um, claramente...",
+        "Não se preocupe, quase ninguém consegue no modo difícil!",
+      ],
+    }
   
-    // Criar efeito de rastro do mouse
-    document.addEventListener("mousemove", createTrail)
+    // Inicializar o jogo
+    initGame()
   
-    // Posição inicial
-    positionButton()
+    function initGame() {
+      // Verificar se já existe uma dificuldade selecionada
+      if (selectedDifficulty && Object.keys(difficultySettings).includes(selectedDifficulty)) {
+        startGame(selectedDifficulty)
+      } else {
+        // Mostrar tela de seleção de dificuldade
+        difficultyScreen.style.display = "flex"
+        gameScreen.classList.add("hidden")
   
-    // Rastrear movimento do mouse
-    document.addEventListener("mousemove", (e) => {
-      const buttonRect = button.getBoundingClientRect()
-      const buttonCenterX = buttonRect.left + buttonRect.width / 2
-      const buttonCenterY = buttonRect.top + buttonRect.height / 2
-  
-      const mouseX = e.clientX
-      const mouseY = e.clientY
-  
-      // Calcular distância entre o mouse e o botão
-      const distance = Math.sqrt(Math.pow(mouseX - buttonCenterX, 2) + Math.pow(mouseY - buttonCenterY, 2))
-  
-      // Se o mouse estiver se aproximando, mover o botão
-      // Limiar aumentado para 300px para facilitar a captura
-      if (distance < 450) {
-        moveButton()
+        // Adicionar event listeners para os botões de dificuldade
+        const difficultyButtons = document.querySelectorAll(".difficulty-btn")
+        difficultyButtons.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const difficulty = btn.getAttribute("data-difficulty")
+            localStorage.setItem("selectedDifficulty", difficulty)
+            selectedDifficulty = difficulty
+            startGame(difficulty)
+          })
+        })
       }
-    })
+    }
   
-    // Lidar com clique no botão
-    button.addEventListener("click", () => {
-      // Adicionar animação de sucesso antes do redirecionamento
-      button.style.animation = "none"
-      button.offsetHeight // Forçar reflow
-      button.style.animation = "pulse 0.5s"
-      button.style.background = "linear-gradient(135deg, #2ecc71, #3498db)"
-      button.textContent = "Peguei!"
-      button.style.transform = "scale(1.2)"
+    function startGame(difficulty) {
+      // Esconder tela de seleção e mostrar o jogo
+      difficultyScreen.style.display = "none"
+      gameScreen.classList.remove("hidden")
   
-      // Criar partículas de sucesso
-      createSuccessParticles(button)
+      // Adicionar classe de dificuldade ao game screen
+      gameScreen.className = "game-screen"
+      gameScreen.classList.add(`difficulty-${difficulty}`)
   
-      // Redirecionar após um pequeno atraso para mostrar a animação de sucesso
-      setTimeout(() => {
-        // Efeito de fade out antes do redirecionamento
-        document.body.style.animation = "fadeOut 0.5s forwards"
+      // Atualizar o indicador de dificuldade
+      currentDifficultySpan.textContent = difficultySettings[difficulty].name
+      currentDifficultySpan.className = ""
+      currentDifficultySpan.classList.add(difficulty)
   
-        setTimeout(() => {
-          window.location.href = "success.html"
-        }, 500)
-      }, 1000)
-    })
+      // Criar partículas flutuantes
+      createParticles()
   
-    // Lidar com cliques perdidos
-    document.addEventListener("click", (e) => {
-      if (e.target !== button && e.target !== popupClose) {
-        attempts++
-        consecutiveMisses++
-        attemptCounter.textContent = attempts
+      // Criar efeito de rastro do mouse
+      document.addEventListener("mousemove", createTrail)
   
-        // Criar efeito de clique
-        createClickEffect(e.clientX, e.clientY)
+      // Posição inicial
+      positionButton()
   
-        // Tremer o contador de tentativas
-        const attemptsElement = document.querySelector(".attempts")
-        attemptsElement.style.animation = "none"
-        attemptsElement.offsetHeight // Forçar reflow
-        attemptsElement.style.animation = "shake 0.5s"
+      // Rastrear movimento do mouse
+      document.addEventListener("mousemove", (e) => {
+        const buttonRect = button.getBoundingClientRect()
+        const buttonCenterX = buttonRect.left + buttonRect.width / 2
+        const buttonCenterY = buttonRect.top + buttonRect.height / 2
   
-        // Mostrar mensagem humorística após 10 cliques consecutivos perdidos
-        if (consecutiveMisses >= 10) {
-          showFunnyMessage()
-          consecutiveMisses = 0 // Resetar contador após mostrar a mensagem
+        const mouseX = e.clientX
+        const mouseY = e.clientY
+  
+        // Calcular distância entre o mouse e o botão
+        const distance = Math.sqrt(Math.pow(mouseX - buttonCenterX, 2) + Math.pow(mouseY - buttonCenterY, 2))
+  
+        // Se o mouse estiver se aproximando, mover o botão
+        // Usar o limiar baseado na dificuldade
+        if (distance < difficultySettings[difficulty].moveThreshold) {
+          moveButton(difficulty)
         }
-      }
-    })
+      })
+  
+      // Lidar com clique no botão
+      button.addEventListener("click", () => {
+        // Adicionar animação de sucesso antes do redirecionamento
+        button.style.animation = "none"
+        button.offsetHeight // Forçar reflow
+        button.style.animation = "pulse 0.5s"
+        button.style.background = "linear-gradient(135deg, #2ecc71, #3498db)"
+        button.textContent = "Peguei!"
+        button.style.transform = "scale(1.2)"
+  
+        // Criar partículas de sucesso
+        createSuccessParticles(button)
+  
+        // Redirecionar após um pequeno atraso para mostrar a animação de sucesso
+        setTimeout(() => {
+          // Efeito de fade out antes do redirecionamento
+          document.body.style.animation = "fadeOut 0.5s forwards"
+  
+          setTimeout(() => {
+            window.location.href = "success.html"
+          }, 500)
+        }, 1000)
+      })
+  
+      // Lidar com cliques perdidos
+      document.addEventListener("click", (e) => {
+        if (e.target !== button && e.target !== popupClose && e.target !== changeDifficultyBtn) {
+          attempts++
+          consecutiveMisses++
+          attemptCounter.textContent = attempts
+  
+          // Criar efeito de clique
+          createClickEffect(e.clientX, e.clientY)
+  
+          // Tremer o contador de tentativas
+          const attemptsElement = document.querySelector(".attempts")
+          attemptsElement.style.animation = "none"
+          attemptsElement.offsetHeight // Forçar reflow
+          attemptsElement.style.animation = "shake 0.5s"
+  
+          // Mostrar mensagem humorística após X cliques consecutivos perdidos (baseado na dificuldade)
+          if (consecutiveMisses >= difficultySettings[difficulty].consecutiveMissesThreshold) {
+            showFunnyMessage(difficulty)
+            consecutiveMisses = 0 // Resetar contador após mostrar a mensagem
+          }
+        }
+      })
+  
+      // Botão para mudar dificuldade
+      changeDifficultyBtn.addEventListener("click", () => {
+        localStorage.removeItem("selectedDifficulty")
+        location.reload()
+      })
+    }
   
     // Fechar popup
     popupClose.addEventListener("click", () => {
@@ -144,7 +215,7 @@ document.addEventListener("DOMContentLoaded", () => {
       button.style.top = randomY + "px"
     }
   
-    function moveButton() {
+    function moveButton(difficulty) {
       const maxX = window.innerWidth - button.offsetWidth
       const maxY = window.innerHeight - button.offsetHeight
   
@@ -152,13 +223,13 @@ document.addEventListener("DOMContentLoaded", () => {
       const currentX = Number.parseInt(button.style.left) || 0
       const currentY = Number.parseInt(button.style.top) || 0
   
-      // Gerar nova posição (distância de movimento reduzida para facilitar a captura)
+      // Gerar nova posição (distância baseada na dificuldade)
       let newX, newY
+      const moveDistance = difficultySettings[difficulty].moveDistance
   
       do {
-        // Distância de movimento reduzida de 300 para 150
-        newX = currentX + (Math.random() * 150 - 75)
-        newY = currentY + (Math.random() * 150 - 75)
+        newX = currentX + (Math.random() * moveDistance * 2 - moveDistance)
+        newY = currentY + (Math.random() * moveDistance * 2 - moveDistance)
   
         // Manter o botão dentro da viewport
         newX = Math.max(0, Math.min(maxX, newX))
@@ -167,15 +238,16 @@ document.addEventListener("DOMContentLoaded", () => {
         // Garantir que o botão realmente se mova, mas não muito longe
       } while (Math.abs(newX - currentX) < 30 && Math.abs(newY - currentY) < 30)
   
-      // Adicionar transição para movimento mais suave
-      button.style.transition = "left 0.6s ease-out, top 0.6s ease-out"
+      // Adicionar transição para movimento mais suave (velocidade baseada na dificuldade)
+      const moveSpeed = difficultySettings[difficulty].moveSpeed
+      button.style.transition = `left ${moveSpeed}s ease-out, top ${moveSpeed}s ease-out`
       button.style.left = newX + "px"
       button.style.top = newY + "px"
   
       // Remover transição após o movimento para evitar lag
       setTimeout(() => {
         button.style.transition = "none"
-      }, 600)
+      }, moveSpeed * 1000)
     }
   
     function createClickEffect(x, y) {
@@ -258,9 +330,16 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
   
-    function showFunnyMessage() {
+    function showFunnyMessage(difficulty) {
+      // Combinar mensagens gerais com mensagens específicas da dificuldade
+      const allMessages = [...funnyMessages]
+  
+      if (difficultyMessages[difficulty]) {
+        allMessages.push(...difficultyMessages[difficulty])
+      }
+  
       // Selecionar uma mensagem aleatória
-      const randomMessage = funnyMessages[Math.floor(Math.random() * funnyMessages.length)]
+      const randomMessage = allMessages[Math.floor(Math.random() * allMessages.length)]
       popupMessage.textContent = randomMessage
   
       // Mostrar o popup
